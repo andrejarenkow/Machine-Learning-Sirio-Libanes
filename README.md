@@ -82,7 +82,7 @@ Dummy Classifier | 0,500 | 0,5000
 
 Como é possível verificar, o modelo de SVM obteve os melhores resultados de ROC_AUC, tanto no teste, quanto no treino, não chegando a *overfitar*.
 
-Os hiperparâmetros escolhidos para variar foram:
+Os hiperparâmetros escolhidos para variar foram <sup>[3](https://scikit-learn.org/stable/modules/svm.html), [4](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC), [5](https://www.vebuso.com/2020/03/svm-hyperparameter-tuning-using-gridsearchcv/)</sup> :
 
 * **Kernel** -  *linear*, *poly*, *rbf* e *sigmoid*
 * **C** - 1 e 10
@@ -107,5 +107,7 @@ A limpeza e tratamento dos dados é muito bem vinda, uma vez que facilitou a vid
 # Referências
 
 1. https://www.paho.org/pt/covid19/historico-da-pandemia-covid-19
-
 2. https://relief.unboundmedicine.com/relief/view/Coronavirus-Guidelines/2355041/all/Epidemic__Epi__Curves_for_Coronavirus_COVID_19
+3. https://scikit-learn.org/stable/modules/svm.html
+4. https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC
+5. https://www.vebuso.com/2020/03/svm-hyperparameter-tuning-using-gridsearchcv/
