@@ -33,7 +33,7 @@ Um dos principais problemas em um banco de dados é quantidade de dados que são
 ### Por que tem tanta linha aqui da mesma pessoa?
 Como dito anteriormente, cada paciente possuía 5 linhas no banco de dados, uma para cada janela de tempo da permanência dele no hospital. O problema é que isso complica a vida do nosso modelo, pois queremos saber se o paciente vai ou não para a UTI baseado na sua admissão no hospital. Assim, utilizou-se somente primeira janela de tempo de cada paciente (0 a 2 horas). Para manter a coluna de internação em UTI, a qual é binária (0 ou 1), apenas passou-se uma tabela dinâmica de valor máximo desta coluna por paciente. 
 
-### Eu preciso usar todas essas colunas?
+### Eu preciso usar todas essas colunas mesmo?
 No total, a base de dados conta com 231 colunas, das quais:
 * 13 eram variáveis pré-existentes dos pacientes;
 * 216 variáveis relacionadas a exames;
@@ -42,19 +42,36 @@ No total, a base de dados conta com 231 colunas, das quais:
 
 Para facilitar a vida do nosso modelo, utilizou-se duas metodologias de *feature selection* ou *seleção de variáveis* nas colunas relacionadas a exames:
 #### Variance threshold
+Uma metodologia disponível dentro do pacote do [Scikit Learn](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.VarianceThreshold.html#sklearn.feature_selection.VarianceThreshold) a qual avalia a variância dentro da coluna e, caso esta seja menor do que o valor setado, a coluna é retirada do banco. No estudo, foi utilizado como valor de corte apenas aquelas que não possuíam variação nenhuma.
 
 #### Correlação alta entre colunas
+Pensemos assim: digamos que eu quero prever se uma pessoa vai precisar usar o cartão de crédito em um determinado mês, e dentre as variáveis que eu vou utilizar para prever estão o número de roupas que esta pessoa comprou no mês e quantas vezes ela foi a uma loja de roupas. Conseguimos afirmar que estas duas variáveis são correlacionadas, pois quando uma aumenta, a outra também aumenta! Para o modelo, é quase que uma redundância, pois ele pode utilizar apenas uma delas para fazer a previsão.
+
+No caso dos dados do Sírio-Libanês não é diferente, e algumas colunas podem ser cortadas! Criou-se então uma matriz de correlação entre estas colunas e retirou-se uma de cada par com correlação maior do que 0,95.
 
 ## Machine learning
 
 ### Qual modelo eu escolho?
+Após a limpeza e tratamento dos dados, chegou a hora de testar modelos de classificação! Foram escolhidos os seguintes:
+* [Suport Vector Machines](https://scikit-learn.org/stable/modules/svm.html#classification)
+* [Decision Trees](https://scikit-learn.org/stable/modules/tree.html#classification)
+* [Ensemble Methods](https://scikit-learn.org/stable/modules/ensemble.html)
+* Como referência, [Dummy Classifier.](https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html#sklearn.dummy.DummyClassifier)
+
+Para diminuir a aleatoriedade do modelo, utilizou-se a [*Cross validation*](https://scikit-learn.org/stable/modules/cross_validation.html) com [*Repeated KFold Stratified*](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RepeatedStratifiedKFold.html#sklearn.model_selection.RepeatedStratifiedKFold), o qual vai repetir n vezes o processo de validação, de maneira estratificada (dividida igualmente de acordo com os dados), dividindo-o em treino e teste n vezes e verificando a métrica em cada uma destas vezes.
+Como métrica de avaliação, utilizou-se a média do *Receiver Operating Characteristic - Area Under the Curve*, ou também apelidado de ROC_AUC médio. A métrica foi verificada tanto nos dados de teste quanto nos dados de treino, a fim de visualizar o [*overfitting*](https://pt.wikipedia.org/wiki/Sobreajuste). 
 
 ### Tunando o modelo escolhido
 
-
+Após a escolha do modelo, os hiperparâmetros foram escolhidos com a ajuda de um laço **FOR**, o qual rodou a mesma métrica para diferentes valores pré-estabelecidos dos parâmetros do modelo.
 
 # Resultados e Discussão
 
+Na tabela abaixo, é possível verificar como foram os diferentes resultados para métricas de ROC_AUC nos modelos testados:
+Modelo | ROC_AUC médio - teste | ROC_AUC médio - treino
+------------ | ------------- | --------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
 
 # Conclusão
 
