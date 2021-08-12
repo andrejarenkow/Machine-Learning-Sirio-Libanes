@@ -33,6 +33,10 @@ Um dos principais problemas em um banco de dados é quantidade de dados que são
 ### Por que tem tanta linha aqui da mesma pessoa?
 Como dito anteriormente, cada paciente possuía 5 linhas no banco de dados, uma para cada janela de tempo da permanência dele no hospital. O problema é que isso complica a vida do nosso modelo, pois queremos saber se o paciente vai ou não para a UTI baseado na sua admissão no hospital. Assim, utilizou-se somente primeira janela de tempo de cada paciente (0 a 2 horas). Para manter a coluna de internação em UTI, a qual é binária (0 ou 1), apenas passou-se uma tabela dinâmica de valor máximo desta coluna por paciente. 
 
+### Como transformo *string* em número?
+
+É interessante verificar que a coluna *AGE_PERCENTIL* é uma string, e teremos que transformá-la em numérica através da técnica de [colunas dummies](https://pandas.pydata.org/docs/reference/api/pandas.get_dummies.html), a qual vai criar uma nova coluna para cada valor único e marcará com 1 a coluna do valor que aquela linha possuía.
+
 ### Eu preciso usar todas essas colunas mesmo?
 No total, a base de dados conta com 231 colunas, das quais:
 * 13 eram variáveis pré-existentes dos pacientes;
@@ -67,13 +71,38 @@ Após a escolha do modelo, os hiperparâmetros foram escolhidos com a ajuda de u
 
 # Resultados e Discussão
 
+Após o *feature selection*, o modelo foi treinado com 70 colunas, diminuindo 151 colunas.
 Na tabela abaixo, é possível verificar como foram os diferentes resultados para métricas de ROC_AUC nos modelos testados:
 Modelo | ROC_AUC médio - teste | ROC_AUC médio - treino
 ------------ | ------------- | --------------
-SVM | Content from cell 2
-Random Forest - Ensemble Methods | Content in the second column
+SVM | 0,771 | 0,840
+Random Forest - Ensemble Methods | 0,751 | 0,999
+Decision Tree | 0,604 | 1,000
+Dummy Classifier | 0,500 | 0,5000
+
+Como é possível verificar, o modelo de SVM obteve os melhores resultados de ROC_AUC, tanto no teste, quanto no treino, não chegando a *overfitar*.
+
+Os hiperparâmetros escolhidos para variar foram:
+
+* **Kernel** -  *linear*, *poly*, *rbf* e *sigmoid*
+* **C** - 1 e 10
+* **gamma** - 1, 0,10 e 0,01.
+
+Dessa vez, foram 24 combinações diferentes. Na tabela abaixo coloco os 5 primeiros colocados em relação ao ROC_AUC médio de teste:
+
+Kernel | C | gamma | ROC_AUC médio - teste | ROC_AUC médio - treino
+------------ | ------------- | -------------- | ---------------| ----------
+rbf | 1 | 0,10 | 0,782 | 0,889
+rbf | 10 | 0,01 | 0,771 | 0,856
+poly | 10 | 0,01 | 0,767 | 0,808
+rbf | 10 | 0,10 | 0,767 | 0,987
+linear | 1 | 1 | 0,761 | 0,861
+
+Olhando de maneira crua, é possível dizer que a combinação de kernel = rbf, C = 1 e gamma  = 0,10 foi a melhor, no entanto, o ROC_AUC de treino foi um pouco mais elevado também. Acredito que a escolha do segundo lugar seria uma opção tão boa quanto a primeira.
 
 # Conclusão
+
+Dentre os modelos testados, aquele que mais se aproximou de um valor ótimo foi o de Suport Vector Machines, com hiperparâmetros de Kernel = rbf, C = 1 e gamma = 0,10, atingindo um ROC_AUC médio de teste de 0,782. É um valor bastante razoável, levando em conta que o modelo não 
 
 # Referências
 
