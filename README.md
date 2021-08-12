@@ -70,8 +70,8 @@ Após a escolha do modelo, os hiperparâmetros foram escolhidos com a ajuda de u
 Na tabela abaixo, é possível verificar como foram os diferentes resultados para métricas de ROC_AUC nos modelos testados:
 Modelo | ROC_AUC médio - teste | ROC_AUC médio - treino
 ------------ | ------------- | --------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+SVM | Content from cell 2
+Random Forest - Ensemble Methods | Content in the second column
 
 # Conclusão
 
