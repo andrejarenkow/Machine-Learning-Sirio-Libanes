@@ -102,7 +102,7 @@ Olhando de maneira crua, é possível dizer que a combinação de kernel = rbf, 
 
 # Conclusão
 
-A limpeza e tratamento dos dados é muito bem vinda, uma vez que facilitou a vida do nosso modelo, diminuindo o poder computacional necessário para que o mesmo seja treinado. Dentre os modelos testados, aquele que mais se aproximou de um valor ótimo foi o de Suport Vector Machines, com hiperparâmetros de Kernel = rbf, C = 1 e gamma = 0,10, atingindo um ROC_AUC médio de teste de 0,782. É um valor bastante razoável, levando em conta que o modelo não 
+A limpeza e tratamento dos dados é muito bem vinda, uma vez que facilitou a vida do nosso modelo, diminuindo o poder computacional necessário para que o mesmo seja treinado. Dentre os modelos testados, aquele que mais se aproximou de um valor ótimo foi o de Suport Vector Machines, com hiperparâmetros de Kernel = rbf, C = 1 e gamma = 0,10, atingindo um ROC_AUC médio de teste de 0,782.  
 
 # Referências
 
